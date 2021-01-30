@@ -53,8 +53,8 @@ app.post("/validate-rule", async (req, res, next)=> {
 
         const field = value["rule"]["field"]
 
-        const condition = value["rule"]["condition"] || ""
-        const condition_value = value["rule"]["condition_value"] || ""
+        const condition = value["rule"]["condition"]
+        const condition_value = value["rule"]["condition_value"]
 
         let field_value = ""
 
@@ -72,23 +72,33 @@ app.post("/validate-rule", async (req, res, next)=> {
 
         const isValid = handleCondition(condition, field_value, condition_value)
 
-        if (!isValid) {
-            throw new Error("rule is required")
-        }
-
-        res.status(200).json({
-            message: `field ${field} successfully validated`,
-            status: "success",
-            data: {
-                validation: {
-                    error: false,
-                    field,
-                    field_value,
-                    condition,
-                    condition_value
+        isValid ?
+            res.status(200).json({
+                message: `field ${field} successfully validated`,
+                status: "success",
+                data: {
+                    validation: {
+                        error: false,
+                        field,
+                        field_value,
+                        condition,
+                        condition_value
+                    }
                 }
-            }
-        });
+            }):
+            res.status(400).json({
+                message: `field ${field} failed validation`,
+                status: "error",
+                data: {
+                    validation: {
+                        error: true,
+                        field,
+                        field_value,
+                        condition,
+                        condition_value
+                    }
+                }
+            })
     } catch (error) {
         error.statusCode = 400
         next(error)
