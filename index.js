@@ -12,9 +12,9 @@ const querySchema = Joi.object({
         condition: Joi.string()
         .valid("eq", "neq", "gt", "gte", "contains").required(),
         condition_value: Joi.any().required()
-    }),
-    data: Joi.any()
-}).required();
+    }).required(),
+    data: Joi.any().required()
+});
 
 const winston = require('winston');
 const logger = winston.createLogger({
