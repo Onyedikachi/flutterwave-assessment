@@ -10,8 +10,8 @@ const querySchema = Joi.object({
     rule: Joi.object().keys({
         field: Joi.string().required(),
         condition: Joi.string()
-        .valid("eq", "neq", "gt", "gte", "contains"),
-        condition_value: Joi.any()
+        .valid("eq", "neq", "gt", "gte", "contains").required(),
+        condition_value: Joi.any().required()
     }),
     data: Joi.any()
 }).required();
