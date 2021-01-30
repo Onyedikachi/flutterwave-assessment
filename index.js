@@ -16,8 +16,6 @@ const logger = winston.createLogger({
 
 const port = process.env.PORT || 4000
 
-
-
 app.use(helmet())
 app.use(cors())
 
@@ -25,11 +23,27 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ limit: "52428800" }))
 
 
+app.get("/", (req, res)=>{
+    res.json({
+        message: "My Rule-Validation API",
+        status: "success",
+        data: {
+            name: "Nwosu Onyedikachi",
+            github: "@onyedikachi",
+            email: "onyedikachinwosu@rocketmail.com",
+            mobile: "08139203980",
+            twitter: "@NOI4christ"
+        }
+    })
+});
+
+
 app.use((req, res, next) => {
     const err = new Error("Not Found");
     err.status = 404;
     next(err);
-  });
+});
+
 app.use((err, req, res, next) => {
     if (err.isBoom) {
         const { message } = err.data[0];
